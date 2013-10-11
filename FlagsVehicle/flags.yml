@@ -1,0 +1,41 @@
+Flag:
+  BoatDamage:
+    Description: Toggles boat taking damage.
+    Default: true
+    Player: false
+  MinecartDamage:
+    Description: Toggles minecart taking damage.
+    Default: true
+    Player: false
+  TamedHorseDamage:
+    Description: Toggles tamed horse taking damage.
+    Default: true
+    Player: false
+  SaddledPigDamage:
+    Description: Toggles saddled pig taking damage.
+    Default: true
+    Player: false
+  SaddlePig:
+    Description: Allows or denies the ability to saddle a pig.
+    Default: true
+    Player: true
+    AreaMessage: '{Player}, you are not allowed to saddle pigs in {Owner}''s {AreaType}.'
+    WorldMessage: '{Player}, you are not allowed to saddle pigs in {World}.'
+  SaddleHorse:
+    Description: Allows or denies the ability to saddle a horse.
+    Default: true
+    Player: true
+    AreaMessage: '{Player}, you are not allowed to saddle horses in {Owner}''s {AreaType}.'
+    WorldMessage: '{Player}, you are not allowed to saddle horses in {World}.'
+  PlaceBoat:
+    Description: Allows or denies the ability to place a boat.
+    Default: true
+    Player: true
+    AreaMessage: '{Player}, you are not allowed to place boats in {Owner}''s {AreaType}.'
+    WorldMessage: '{Player}, you are not allowed to place boats in {World}.'
+  PlaceMinecart:
+    Description: Allows or denies the ability to place a minecart.
+    Default: true
+    Player: true
+    AreaMessage: '{Player}, you are not allowed to place minecarts in {Owner}''s {AreaType}.'
+    WorldMessage: '{Player}, you are not allowed to place minecarts in {World}.'

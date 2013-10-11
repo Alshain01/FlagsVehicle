@@ -1,0 +1,7 @@
+name: FlagsVehicle
+version: 1.0.0
+description: Module that adds vehicle flags to the Flags plugin.
+author: Alshain01
+website: http://dev.bukkit.org/bukkit-plugins/flags/
+main: alshain01.FlagsVehicle.FlagsVehicle
+depend: [Flags]
