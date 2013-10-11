@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Boat;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -50,6 +49,12 @@ public class FlagsVehicle extends JavaPlugin {
 		Registrar flags = Flags.instance.getRegistrar();
 		for(String f : dataFile.getModuleData().getConfigurationSection("Flag").getKeys(false)) {
 			ConfigurationSection data = dataFile.getModuleData().getConfigurationSection("Flag." + f);
+			
+			// We don't want to register flags that aren't supported.
+			// It would just muck up the help menu.
+			// Null value is assumed to support all versions.
+			String api = data.getString("MinimumAPI");  
+			if(api != null && !Flags.instance.checkAPI(api)) { continue; }
 			
 			// The description that appears when using help commands.
 			String desc = data.getString("Description");
@@ -110,7 +115,7 @@ public class FlagsVehicle extends JavaPlugin {
 			} else if (e.getVehicle() instanceof Minecart) {
 				flag = Flags.instance.getRegistrar().getFlag("MinecartDamage");
 				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation()).getValue(flag, false));
-			} else if (e.getVehicle() instanceof Horse && ((Horse)e.getVehicle()).isTamed()) {
+			} else if (Flags.instance.checkAPI("1.6.2") && e.getVehicle() instanceof org.bukkit.entity.Horse && ((org.bukkit.entity.Horse)e.getVehicle()).isTamed()) {
 				flag = Flags.instance.getRegistrar().getFlag("TamedHorseDamage");
 				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation()).getValue(flag, false));
 			} else if (e.getVehicle() instanceof Pig && ((Pig)e.getVehicle()).hasSaddle()) {
@@ -132,7 +137,7 @@ public class FlagsVehicle extends JavaPlugin {
 						Flags.instance.getRegistrar().getFlag("SaddlePig"),
 						Director.getAreaAt(e.getRightClicked().getLocation())));
 				
-			} else if (e.getRightClicked() instanceof Horse) {
+			} else if (Flags.instance.checkAPI("1.6.2") && e.getRightClicked() instanceof org.bukkit.entity.Horse) {
 				
 				e.setCancelled(isDenied(e.getPlayer(),
 						Flags.instance.getRegistrar().getFlag("SaddleHorse"),

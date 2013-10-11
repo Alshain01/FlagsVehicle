@@ -11,6 +11,7 @@ Flag:
     Description: Toggles tamed horse taking damage.
     Default: true
     Player: false
+    MinimumAPI: 1.6.2
   SaddledPigDamage:
     Description: Toggles saddled pig taking damage.
     Default: true
@@ -27,6 +28,7 @@ Flag:
     Player: true
     AreaMessage: '{Player}, you are not allowed to saddle horses in {Owner}''s {AreaType}.'
     WorldMessage: '{Player}, you are not allowed to saddle horses in {World}.'
+    MinimumAPI: 1.6.2
   PlaceBoat:
     Description: Allows or denies the ability to place a boat.
     Default: true
