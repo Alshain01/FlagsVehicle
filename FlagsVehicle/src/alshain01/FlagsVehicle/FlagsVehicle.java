@@ -87,17 +87,13 @@ public class FlagsVehicle extends JavaPlugin {
 	 * The event handlers for the flags we created earlier
 	 */
 	private class VehicleListener implements Listener {
-		private void sendMessage(Player player, Flag flag, Area area) {
-			player.sendMessage(area.getMessage(flag)
-					.replaceAll("\\{Player\\}", player.getName()));
-		}
 
 		private boolean isDenied(Player player, Flag flag, Area area) {
 			if(flag.hasBypassPermission(player)
 					|| area.getTrustList(flag).contains(player.getName())) { return false; }
 
 			if (!area.getValue(flag, false)) {
-				sendMessage(player, flag, area);
+				player.sendMessage(area.getMessage(flag, player.getName()));
 				return true;
 			}
 			return false;
@@ -108,19 +104,26 @@ public class FlagsVehicle extends JavaPlugin {
 		 */
 		@EventHandler(ignoreCancelled = true)
 		private void onVehicleDamage(VehicleDamageEvent e) {
-			Flag flag;
 			if(e.getVehicle() instanceof Boat) {
-				flag = Flags.instance.getRegistrar().getFlag("BoatDamage");
-				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation()).getValue(flag, false));
+				
+				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
+						.getValue(Flags.instance.getRegistrar().getFlag("BoatDamage"), false));
+				
 			} else if (e.getVehicle() instanceof Minecart) {
-				flag = Flags.instance.getRegistrar().getFlag("MinecartDamage");
-				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation()).getValue(flag, false));
+
+				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
+						.getValue(Flags.instance.getRegistrar().getFlag("MinecartDamage"), false));
+				
 			} else if (Flags.instance.checkAPI("1.6.2") && e.getVehicle() instanceof org.bukkit.entity.Horse && ((org.bukkit.entity.Horse)e.getVehicle()).isTamed()) {
-				flag = Flags.instance.getRegistrar().getFlag("TamedHorseDamage");
-				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation()).getValue(flag, false));
+
+				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
+						.getValue(Flags.instance.getRegistrar().getFlag("TamedHorseDamage"), false));
+				
 			} else if (e.getVehicle() instanceof Pig && ((Pig)e.getVehicle()).hasSaddle()) {
-				flag = Flags.instance.getRegistrar().getFlag("SaddledPigDamage");
-				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation()).getValue(flag, false));
+				
+				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
+						.getValue(Flags.instance.getRegistrar().getFlag("SaddledPigDamage"), false));
+				
 			}
 		}
 		
