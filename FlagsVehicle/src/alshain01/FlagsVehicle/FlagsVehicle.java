@@ -89,7 +89,7 @@ public class FlagsVehicle extends JavaPlugin {
 	private class VehicleListener implements Listener {
 
 		private boolean isDenied(Player player, Flag flag, Area area) {
-			if(flag.hasBypassPermission(player)
+			if(player.hasPermission(flag.getBypassPermission())
 					|| area.getTrustList(flag).contains(player.getName())) { return false; }
 
 			if (!area.getValue(flag, false)) {
