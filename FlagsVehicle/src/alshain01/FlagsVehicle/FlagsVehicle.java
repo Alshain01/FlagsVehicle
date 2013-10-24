@@ -46,7 +46,7 @@ public class FlagsVehicle extends JavaPlugin {
 		ModuleYML dataFile = new ModuleYML(this, "flags.yml");
 		
 		// Register with Flags
-		Registrar flags = Flags.instance.getRegistrar();
+		Registrar flags = Flags.getRegistrar();
 		for(String f : dataFile.getModuleData().getConfigurationSection("Flag").getKeys(false)) {
 			ConfigurationSection data = dataFile.getModuleData().getConfigurationSection("Flag." + f);
 			
@@ -54,7 +54,7 @@ public class FlagsVehicle extends JavaPlugin {
 			// It would just muck up the help menu.
 			// Null value is assumed to support all versions.
 			String api = data.getString("MinimumAPI");  
-			if(api != null && !Flags.instance.checkAPI(api)) { continue; }
+			if(api != null && !Flags.checkAPI(api)) { continue; }
 			
 			// The description that appears when using help commands.
 			String desc = data.getString("Description");
@@ -107,22 +107,22 @@ public class FlagsVehicle extends JavaPlugin {
 			if(e.getVehicle() instanceof Boat) {
 				
 				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
-						.getValue(Flags.instance.getRegistrar().getFlag("BoatDamage"), false));
+						.getValue(Flags.getRegistrar().getFlag("BoatDamage"), false));
 				
 			} else if (e.getVehicle() instanceof Minecart) {
 
 				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
-						.getValue(Flags.instance.getRegistrar().getFlag("MinecartDamage"), false));
+						.getValue(Flags.getRegistrar().getFlag("MinecartDamage"), false));
 				
-			} else if (Flags.instance.checkAPI("1.6.2") && e.getVehicle() instanceof org.bukkit.entity.Horse && ((org.bukkit.entity.Horse)e.getVehicle()).isTamed()) {
+			} else if (Flags.checkAPI("1.6.2") && e.getVehicle() instanceof org.bukkit.entity.Horse && ((org.bukkit.entity.Horse)e.getVehicle()).isTamed()) {
 
 				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
-						.getValue(Flags.instance.getRegistrar().getFlag("TamedHorseDamage"), false));
+						.getValue(Flags.getRegistrar().getFlag("TamedHorseDamage"), false));
 				
 			} else if (e.getVehicle() instanceof Pig && ((Pig)e.getVehicle()).hasSaddle()) {
 				
 				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
-						.getValue(Flags.instance.getRegistrar().getFlag("SaddledPigDamage"), false));
+						.getValue(Flags.getRegistrar().getFlag("SaddledPigDamage"), false));
 				
 			}
 		}
@@ -137,13 +137,13 @@ public class FlagsVehicle extends JavaPlugin {
 			if(e.getRightClicked() instanceof Pig) {
 				
 				e.setCancelled(isDenied(e.getPlayer(),
-						Flags.instance.getRegistrar().getFlag("SaddlePig"),
+						Flags.getRegistrar().getFlag("SaddlePig"),
 						Director.getAreaAt(e.getRightClicked().getLocation())));
 				
-			} else if (Flags.instance.checkAPI("1.6.2") && e.getRightClicked() instanceof org.bukkit.entity.Horse) {
+			} else if (Flags.checkAPI("1.6.2") && e.getRightClicked() instanceof org.bukkit.entity.Horse) {
 				
 				e.setCancelled(isDenied(e.getPlayer(),
-						Flags.instance.getRegistrar().getFlag("SaddleHorse"),
+						Flags.getRegistrar().getFlag("SaddleHorse"),
 						Director.getAreaAt(e.getRightClicked().getLocation())));
 				
 			}
@@ -159,13 +159,13 @@ public class FlagsVehicle extends JavaPlugin {
 			if(e.getClickedBlock().getType() == Material.WATER && e.getItem().getType() == Material.BOAT) {
 				
 				e.setCancelled(isDenied(e.getPlayer(),
-						Flags.instance.getRegistrar().getFlag("PlaceBoat"),
+						Flags.getRegistrar().getFlag("PlaceBoat"),
 						Director.getAreaAt(e.getClickedBlock().getLocation())));
 				
 			} else if (e.getClickedBlock() instanceof Rails && e.getItem() instanceof Minecart) {
 				
 				e.setCancelled(isDenied(e.getPlayer(),
-						Flags.instance.getRegistrar().getFlag("PlaceMinecart"),
+						Flags.getRegistrar().getFlag("PlaceMinecart"),
 						Director.getAreaAt(e.getClickedBlock().getLocation())));
 				
 			}
