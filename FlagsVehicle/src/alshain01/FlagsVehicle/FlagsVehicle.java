@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
-import org.bukkit.material.Rails;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -89,13 +88,21 @@ public class FlagsVehicle extends JavaPlugin {
 	private class VehicleListener implements Listener {
 
 		private boolean isDenied(Player player, Flag flag, Area area) {
-			if(player.hasPermission(flag.getBypassPermission())
-					|| area.getTrustList(flag).contains(player.getName())) { return false; }
+			if(player.hasPermission(flag.getBypassPermission())) {
+				Flags.Debug("Player has bypass.");
+				return false;
+			}
+					
+			if (area.getTrustList(flag).contains(player.getName())) { 
+				Flags.Debug("Player has trust.");
+				return false; }
 
 			if (!area.getValue(flag, false)) {
+				Flags.Debug("Flag forbidden.");
 				player.sendMessage(area.getMessage(flag, player.getName()));
 				return true;
 			}
+			Flags.Debug("Flag allowed.");
 			return false;
 		}
 		
@@ -154,16 +161,14 @@ public class FlagsVehicle extends JavaPlugin {
 		 */
 		@EventHandler(ignoreCancelled = true)
 		private void onPlayerInteract(PlayerInteractEvent e) {
-			if(!e.isBlockInHand()) { return; }
-
-			if(e.getClickedBlock().getType() == Material.WATER && e.getItem().getType() == Material.BOAT) {
-				
+			if(e.getItem().getType() == Material.BOAT) {
+				Flags.Debug("Boat Material In Hand.");
 				e.setCancelled(isDenied(e.getPlayer(),
 						Flags.getRegistrar().getFlag("PlaceBoat"),
 						Director.getAreaAt(e.getClickedBlock().getLocation())));
 				
-			} else if (e.getClickedBlock() instanceof Rails && e.getItem() instanceof Minecart) {
-				
+			} else if (e.getItem() instanceof Minecart) {
+				Flags.Debug("Minecart Material In Hand.");
 				e.setCancelled(isDenied(e.getPlayer(),
 						Flags.getRegistrar().getFlag("PlaceMinecart"),
 						Director.getAreaAt(e.getClickedBlock().getLocation())));

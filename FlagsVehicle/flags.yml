@@ -20,24 +20,24 @@ Flag:
     Description: Allows or denies the ability to saddle a pig.
     Default: true
     Player: true
-    AreaMessage: '{Player}, you are not allowed to saddle pigs in {Owner}''s {AreaType}.'
-    WorldMessage: '{Player}, you are not allowed to saddle pigs in {World}.'
+    AreaMessage: '&c{Player}, you are not allowed to saddle pigs in &6{Owner}&c''s {AreaType}.'
+    WorldMessage: '&c{Player}, you are not allowed to saddle pigs in &6{World}&c.'
   SaddleHorse:
     Description: Allows or denies the ability to saddle a horse.
     Default: true
     Player: true
-    AreaMessage: '{Player}, you are not allowed to saddle horses in {Owner}''s {AreaType}.'
-    WorldMessage: '{Player}, you are not allowed to saddle horses in {World}.'
+    AreaMessage: '&c{Player}, you are not allowed to saddle horses in &6{Owner}&c''s {AreaType}.'
+    WorldMessage: '&c{Player}, you are not allowed to saddle horses in &6{World}&c.'
     MinimumAPI: 1.6.2
   PlaceBoat:
     Description: Allows or denies the ability to place a boat.
     Default: true
     Player: true
-    AreaMessage: '{Player}, you are not allowed to place boats in {Owner}''s {AreaType}.'
-    WorldMessage: '{Player}, you are not allowed to place boats in {World}.'
+    AreaMessage: '&c{Player}, you are not allowed to place boats in &6{Owner}''s {AreaType}.'
+    WorldMessage: '&c{Player}, you are not allowed to place boats in &6{World}&c.'
   PlaceMinecart:
     Description: Allows or denies the ability to place a minecart.
     Default: true
     Player: true
-    AreaMessage: '{Player}, you are not allowed to place minecarts in {Owner}''s {AreaType}.'
-    WorldMessage: '{Player}, you are not allowed to place minecarts in {World}.'
+    AreaMessage: '&c{Player}, you are not allowed to place minecarts in &6{Owner}&c''s {AreaType}.'
+    WorldMessage: '&c{Player}, you are not allowed to place minecarts in &6{World}&c.'
