@@ -1,34 +1,34 @@
 Flag:
   BoatDamage:
-    Description: Toggles boat taking damage.
+    Description: Toggles boat taking damage from sources other than players.
     Default: true
     Player: false
   MinecartDamage:
-    Description: Toggles minecart taking damage.
+    Description: Toggles minecart taking damage from sources other than players.
     Default: true
     Player: false
   TamedHorseDamage:
-    Description: Toggles tamed horse taking damage.
+    Description: Toggles tamed horse taking damage from sources other than players.
     Default: true
     Player: false
     MinimumAPI: 1.6.2
   SaddledPigDamage:
-    Description: Toggles saddled pig taking damage.
+    Description: Toggles saddled pig taking damage from sources other than players.
     Default: true
     Player: false
-  SaddlePig:
-    Description: Allows or denies the ability to saddle a pig.
-    Default: true
-    Player: true
-    AreaMessage: '&c{Player}, you are not allowed to saddle pigs in &6{Owner}&c''s {AreaType}.'
-    WorldMessage: '&c{Player}, you are not allowed to saddle pigs in &6{World}&c.'
-  SaddleHorse:
-    Description: Allows or denies the ability to saddle a horse.
-    Default: true
-    Player: true
-    AreaMessage: '&c{Player}, you are not allowed to saddle horses in &6{Owner}&c''s {AreaType}.'
-    WorldMessage: '&c{Player}, you are not allowed to saddle horses in &6{World}&c.'
-    MinimumAPI: 1.6.2
+  #SaddlePig:
+    #Description: Allows or denies the ability to saddle a pig.
+    #Default: true
+    #Player: true
+    #AreaMessage: '&c{Player}, you are not allowed to saddle pigs in &6{Owner}&c''s {AreaType}.'
+    #WorldMessage: '&c{Player}, you are not allowed to saddle pigs in &6{World}&c.'
+  #SaddleHorse:
+    #Description: Allows or denies the ability to saddle a horse.
+    #Default: true
+    #Player: true
+    #AreaMessage: '&c{Player}, you are not allowed to saddle horses in &6{Owner}&c''s {AreaType}.'
+    #WorldMessage: '&c{Player}, you are not allowed to saddle horses in &6{World}&c.'
+    #MinimumAPI: 1.6.2
   PlaceBoat:
     Description: Allows or denies the ability to place a boat.
     Default: true

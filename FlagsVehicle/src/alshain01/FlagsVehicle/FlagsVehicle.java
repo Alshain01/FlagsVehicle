@@ -4,12 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Boat;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.plugin.PluginManager;
@@ -95,7 +95,8 @@ public class FlagsVehicle extends JavaPlugin {
 					
 			if (area.getTrustList(flag).contains(player.getName())) { 
 				Flags.Debug("Player has trust.");
-				return false; }
+				return false;
+			}
 
 			if (!area.getValue(flag, false)) {
 				Flags.Debug("Flag forbidden.");
@@ -111,6 +112,7 @@ public class FlagsVehicle extends JavaPlugin {
 		 */
 		@EventHandler(ignoreCancelled = true)
 		private void onVehicleDamage(VehicleDamageEvent e) {
+			if(e.getAttacker() instanceof Player) { return; }
 			if(e.getVehicle() instanceof Boat) {
 				
 				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
@@ -121,7 +123,7 @@ public class FlagsVehicle extends JavaPlugin {
 				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
 						.getValue(Flags.getRegistrar().getFlag("MinecartDamage"), false));
 				
-			} else if (Flags.checkAPI("1.6.2") && e.getVehicle() instanceof org.bukkit.entity.Horse && ((org.bukkit.entity.Horse)e.getVehicle()).isTamed()) {
+			} else if (Flags.checkAPI("1.6.2") && e.getVehicle() instanceof Horse && ((Horse)e.getVehicle()).isTamed()) {
 
 				e.setCancelled(!Director.getAreaAt(e.getVehicle().getLocation())
 						.getValue(Flags.getRegistrar().getFlag("TamedHorseDamage"), false));
@@ -134,9 +136,9 @@ public class FlagsVehicle extends JavaPlugin {
 			}
 		}
 		
-		/*
+/*		
 		 * Handler for Saddling animals
-		 */
+		 
 		@EventHandler(ignoreCancelled = true)
 		private void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
 			if(e.getPlayer().getItemInHand().getType() != Material.SADDLE) { return; }
@@ -154,7 +156,7 @@ public class FlagsVehicle extends JavaPlugin {
 						Director.getAreaAt(e.getRightClicked().getLocation())));
 				
 			}
-		}
+		}*/
 		
 		/*
 		 * Handler for Vehicle Creation
@@ -167,7 +169,7 @@ public class FlagsVehicle extends JavaPlugin {
 						Flags.getRegistrar().getFlag("PlaceBoat"),
 						Director.getAreaAt(e.getClickedBlock().getLocation())));
 				
-			} else if (e.getItem() instanceof Minecart) {
+			} else if (e.getItem().getType() == Material.MINECART) {
 				Flags.Debug("Minecart Material In Hand.");
 				e.setCancelled(isDenied(e.getPlayer(),
 						Flags.getRegistrar().getFlag("PlaceMinecart"),
