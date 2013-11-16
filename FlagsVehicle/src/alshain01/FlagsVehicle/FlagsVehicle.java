@@ -39,7 +39,7 @@ public class FlagsVehicle extends JavaPlugin {
 				return false;
 			}
 
-			if (area.getTrustList(flag).contains(player.getName())) {
+			if (area.getTrustList(flag).contains(player.getName().toLowerCase())) {
 				return false;
 			}
 
