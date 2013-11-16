@@ -55,6 +55,9 @@ public class FlagsVehicle extends JavaPlugin {
 		 */
 		@EventHandler(ignoreCancelled = true)
 		private void onPlayerInteract(PlayerInteractEvent e) {
+			if(e.getItem() == null) {
+				return;
+			}
 			if (e.getItem().getType() == Material.BOAT) {
 				Flags.Debug("Boat Material In Hand.");
 				e.setCancelled(isDenied(e.getPlayer(), Flags.getRegistrar()
