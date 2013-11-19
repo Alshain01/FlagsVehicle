@@ -16,7 +16,6 @@ import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import alshain01.Flags.Director;
 import alshain01.Flags.Flag;
 import alshain01.Flags.Flags;
 import alshain01.Flags.ModuleYML;
@@ -61,12 +60,12 @@ public class FlagsVehicle extends JavaPlugin {
 			if (e.getItem().getType() == Material.BOAT) {
 				Flags.Debug("Boat Material In Hand.");
 				e.setCancelled(isDenied(e.getPlayer(), Flags.getRegistrar()
-						.getFlag("PlaceBoat"), Director.getAreaAt(e.getClickedBlock().getLocation())));
+						.getFlag("PlaceBoat"), Area.getAt(e.getClickedBlock().getLocation())));
 
 			} else if (e.getItem().getType() == Material.MINECART) {
 				Flags.Debug("Minecart Material In Hand.");
 				e.setCancelled(isDenied(e.getPlayer(), Flags.getRegistrar()
-						.getFlag("PlaceMinecart"), Director.getAreaAt(e.getClickedBlock().getLocation())));
+						.getFlag("PlaceMinecart"), Area.getAt(e.getClickedBlock().getLocation())));
 
 			}
 		}
@@ -82,20 +81,19 @@ public class FlagsVehicle extends JavaPlugin {
 			
 			Location location = e.getVehicle().getLocation();
 			if (e.getVehicle() instanceof Boat) {
-				e.setCancelled(!Director
-						.getAreaAt(location).getValue(Flags.getRegistrar().getFlag("BoatDamage"), false));
+				e.setCancelled(!Area.getAt(location).getValue(Flags.getRegistrar().getFlag("BoatDamage"), false));
 
 			} else if (e.getVehicle() instanceof Minecart) {
-				e.setCancelled(!Director.getAreaAt(location).getValue(Flags.getRegistrar().getFlag("MinecartDamage"), false));
+				e.setCancelled(!Area.getAt(location).getValue(Flags.getRegistrar().getFlag("MinecartDamage"), false));
 
 			} else if (Flags.checkAPI("1.6.2")
 					&& e.getVehicle() instanceof Horse
 					&& ((Horse) e.getVehicle()).isTamed()) {
-				e.setCancelled(!Director.getAreaAt(location).getValue(Flags.getRegistrar().getFlag("TamedHorseDamage"), false));
+				e.setCancelled(!Area.getAt(location).getValue(Flags.getRegistrar().getFlag("TamedHorseDamage"), false));
 
 			} else if (e.getVehicle() instanceof Pig
 					&& ((Pig) e.getVehicle()).hasSaddle()) {
-				e.setCancelled(!Director.getAreaAt(location).getValue(Flags.getRegistrar().getFlag("SaddledPigDamage"), false));
+				e.setCancelled(!Area.getAt(location).getValue(Flags.getRegistrar().getFlag("SaddledPigDamage"), false));
 			}
 		}
 	}
