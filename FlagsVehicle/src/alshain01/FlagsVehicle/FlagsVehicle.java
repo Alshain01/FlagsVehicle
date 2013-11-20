@@ -1,5 +1,11 @@
 package alshain01.FlagsVehicle;
 
+import io.github.alshain01.Flags.Flag;
+import io.github.alshain01.Flags.Flags;
+import io.github.alshain01.Flags.ModuleYML;
+import io.github.alshain01.Flags.Registrar;
+import io.github.alshain01.Flags.area.Area;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,12 +21,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import alshain01.Flags.Flag;
-import alshain01.Flags.Flags;
-import alshain01.Flags.ModuleYML;
-import alshain01.Flags.Registrar;
-import alshain01.Flags.area.Area;
 
 /**
  * Flags - Vehicle Module that adds vehicle flags to the plug-in Flags.
