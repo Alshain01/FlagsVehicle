@@ -1,4 +1,4 @@
-package alshain01.FlagsVehicle;
+package io.github.alshain01.FlagsVehicle;
 
 import io.github.alshain01.Flags.Flag;
 import io.github.alshain01.Flags.Flags;
