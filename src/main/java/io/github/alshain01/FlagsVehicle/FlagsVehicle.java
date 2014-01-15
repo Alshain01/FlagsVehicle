@@ -25,6 +25,7 @@ package io.github.alshain01.FlagsVehicle;
 
 import io.github.alshain01.Flags.Flag;
 import io.github.alshain01.Flags.Flags;
+import io.github.alshain01.Flags.System;
 import io.github.alshain01.Flags.ModuleYML;
 import io.github.alshain01.Flags.area.Area;
 
@@ -100,11 +101,11 @@ public class FlagsVehicle extends JavaPlugin {
 			}
 			if (e.getItem().getType() == Material.BOAT) {
 				e.setCancelled(isDenied(e.getPlayer(), Flags.getRegistrar()
-						.getFlag("PlaceBoat"), Area.getAt(e.getClickedBlock().getLocation())));
+						.getFlag("PlaceBoat"), System.getActive().getAreaAt(e.getClickedBlock().getLocation())));
 
 			} else if (e.getItem().getType() == Material.MINECART) {
 				e.setCancelled(isDenied(e.getPlayer(), Flags.getRegistrar()
-						.getFlag("PlaceMinecart"), Area.getAt(e.getClickedBlock().getLocation())));
+						.getFlag("PlaceMinecart"), System.getActive().getAreaAt(e.getClickedBlock().getLocation())));
 
 			}
 		}
@@ -120,19 +121,19 @@ public class FlagsVehicle extends JavaPlugin {
 			
 			Location location = e.getVehicle().getLocation();
 			if (e.getVehicle() instanceof Boat) {
-				e.setCancelled(!Area.getAt(location).getValue(Flags.getRegistrar().getFlag("BoatDamage"), false));
+				e.setCancelled(!System.getActive().getAreaAt(location).getValue(Flags.getRegistrar().getFlag("BoatDamage"), false));
 
 			} else if (e.getVehicle() instanceof Minecart) {
-				e.setCancelled(!Area.getAt(location).getValue(Flags.getRegistrar().getFlag("MinecartDamage"), false));
+				e.setCancelled(!System.getActive().getAreaAt(location).getValue(Flags.getRegistrar().getFlag("MinecartDamage"), false));
 
 			} else if (Flags.checkAPI("1.6.2")
 					&& e.getVehicle() instanceof Horse
 					&& ((Horse) e.getVehicle()).isTamed()) {
-				e.setCancelled(!Area.getAt(location).getValue(Flags.getRegistrar().getFlag("TamedHorseDamage"), false));
+				e.setCancelled(!System.getActive().getAreaAt(location).getValue(Flags.getRegistrar().getFlag("TamedHorseDamage"), false));
 
 			} else if (e.getVehicle() instanceof Pig
 					&& ((Pig) e.getVehicle()).hasSaddle()) {
-				e.setCancelled(!Area.getAt(location).getValue(Flags.getRegistrar().getFlag("SaddledPigDamage"), false));
+				e.setCancelled(!System.getActive().getAreaAt(location).getValue(Flags.getRegistrar().getFlag("SaddledPigDamage"), false));
 			}
 		}
 	}
