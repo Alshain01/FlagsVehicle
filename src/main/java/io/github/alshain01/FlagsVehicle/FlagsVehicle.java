@@ -39,6 +39,7 @@ import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.plugin.PluginManager;
@@ -80,7 +81,7 @@ public class FlagsVehicle extends JavaPlugin {
 				return false;
 			}
 
-			if (area.getTrustList(flag).contains(player.getName().toLowerCase())) {
+			if (area.hasTrust(flag, player)) {
 				return false;
 			}
 
@@ -96,17 +97,17 @@ public class FlagsVehicle extends JavaPlugin {
 		 */
 		@EventHandler(ignoreCancelled = true)
 		private void onPlayerInteract(PlayerInteractEvent e) {
-			if(e.getItem() == null) {
-				return;
-			}
+            if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getItem() == null) {
+                return;
+            }
+
+            System sys = System.getActive();
 			if (e.getItem().getType() == Material.BOAT) {
-				e.setCancelled(isDenied(e.getPlayer(), Flags.getRegistrar()
-						.getFlag("PlaceBoat"), System.getActive().getAreaAt(e.getClickedBlock().getLocation())));
-
+                final Flag flag = Flags.getRegistrar().getFlag("PlaceBoat");
+				e.setCancelled(isDenied(e.getPlayer(), flag, sys.getAreaAt(e.getClickedBlock().getLocation())));
 			} else if (e.getItem().getType() == Material.MINECART) {
-				e.setCancelled(isDenied(e.getPlayer(), Flags.getRegistrar()
-						.getFlag("PlaceMinecart"), System.getActive().getAreaAt(e.getClickedBlock().getLocation())));
-
+                final Flag flag = Flags.getRegistrar().getFlag("PlaceMinecart");
+				e.setCancelled(isDenied(e.getPlayer(), flag, sys.getAreaAt(e.getClickedBlock().getLocation())));
 			}
 		}
 
