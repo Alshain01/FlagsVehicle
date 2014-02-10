@@ -21,7 +21,7 @@
  Notice: For any reuse or distribution, you must make clear to others the license terms of this work. The best way to do this is with a link to this web page.
  http://creativecommons.org/licenses/by-nc/3.0/
  */
-package io.github.alshain01.FlagsVehicle;
+package io.github.alshain01.flagsvehicle;
 
 import io.github.alshain01.flags.Flag;
 import io.github.alshain01.flags.Flags;
@@ -32,11 +32,7 @@ import io.github.alshain01.flags.area.Area;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Boat;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.Minecart;
-import org.bukkit.entity.Pig;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -45,10 +41,12 @@ import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
- * Flags - Vehicle Module that adds vehicle flags to the plug-in Flags.
- * 
- * @author Alshain01
+ * Flags Vehicle - Module that adds vehicle flags to the plug-in Flags.
  */
 public class FlagsVehicle extends JavaPlugin {
 	/**
@@ -64,17 +62,27 @@ public class FlagsVehicle extends JavaPlugin {
 		}
 
 		// Connect to the data file and register the flags
-		Flags.getRegistrar().register(new ModuleYML(this, "flags.yml"), "Vehicle");
+		Set<Flag> flags = Flags.getRegistrar().register(new ModuleYML(this, "flags.yml"), "Vehicle");
+        Map<String, Flag> flagMap = new HashMap<String, Flag>();
+        for(Flag f : flags) {
+            flagMap.put(f.getName(), f);
+        }
 
 		// Load plug-in events and data
-		Bukkit.getServer().getPluginManager()
-				.registerEvents(new VehicleListener(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new VehicleListener(flagMap), this);
 	}
 	
 	/*
 	 * The event handlers for the flags we created earlier
 	 */
 	private class VehicleListener implements Listener {
+        final System system = System.getActive();
+        final boolean horseAPI = Flags.checkAPI("1.6.2");
+        final Map<String, Flag> flags;
+
+        private VehicleListener(Map<String, Flag> flags) {
+            this.flags = flags;
+        }
 
 		private boolean isDenied(Player player, Flag flag, Area area) {
 			if (player.hasPermission(flag.getBypassPermission())) {
@@ -101,14 +109,21 @@ public class FlagsVehicle extends JavaPlugin {
                 return;
             }
 
-            System sys = System.getActive();
-			if (e.getItem().getType() == Material.BOAT) {
-                final Flag flag = Flags.getRegistrar().getFlag("PlaceBoat");
-				e.setCancelled(isDenied(e.getPlayer(), flag, sys.getAreaAt(e.getClickedBlock().getLocation())));
-			} else if (e.getItem().getType() == Material.MINECART) {
-                final Flag flag = Flags.getRegistrar().getFlag("PlaceMinecart");
-				e.setCancelled(isDenied(e.getPlayer(), flag, sys.getAreaAt(e.getClickedBlock().getLocation())));
-			}
+            Flag flag;
+            switch(e.getItem().getType()) {
+                case BOAT:
+                    flag = flags.get("PlaceBoat");
+                    break;
+                case MINECART:
+                    flag = flags.get("PlaceMinecart");
+                    break;
+                default:
+                    return;
+            }
+
+            if(flag != null) {
+                e.setCancelled(isDenied(e.getPlayer(), flag, system.getAreaAt(e.getClickedBlock().getLocation())));
+            }
 		}
 
 		/*
@@ -121,22 +136,29 @@ public class FlagsVehicle extends JavaPlugin {
 			}
 			
 			Location location = e.getVehicle().getLocation();
-			if (e.getVehicle() instanceof Boat) {
-				e.setCancelled(!System.getActive().getAreaAt(location).getValue(Flags.getRegistrar().getFlag("BoatDamage"), false));
+            Flag flag;
+            switch(e.getVehicle().getType()) {
+                case BOAT:
+                    flag = flags.get("BoatDamage");
+                    break;
+                case MINECART:
+                    flag = flags.get("MinecartDamage");
+                    break;
+                case PIG:
+                    flag = flags.get("SaddledPigDamage");
+                    break;
+                default:
+                    if(horseAPI && e.getVehicle().getType() == EntityType.HORSE) {
+                        flag = flags.get("TamedHorseDamage");
+                        break;
+                    }
+                    return;
+            }
 
-			} else if (e.getVehicle() instanceof Minecart) {
-				e.setCancelled(!System.getActive().getAreaAt(location).getValue(Flags.getRegistrar().getFlag("MinecartDamage"), false));
-
-			} else if (Flags.checkAPI("1.6.2")
-					&& e.getVehicle() instanceof Horse
-					&& ((Horse) e.getVehicle()).isTamed()) {
-				e.setCancelled(!System.getActive().getAreaAt(location).getValue(Flags.getRegistrar().getFlag("TamedHorseDamage"), false));
-
-			} else if (e.getVehicle() instanceof Pig
-					&& ((Pig) e.getVehicle()).hasSaddle()) {
-				e.setCancelled(!System.getActive().getAreaAt(location).getValue(Flags.getRegistrar().getFlag("SaddledPigDamage"), false));
-			}
-		}
+            if(flag != null) {
+                e.setCancelled(!system.getAreaAt(location).getValue(flag, false));
+            }
+        }
 	}
 
 	/*
