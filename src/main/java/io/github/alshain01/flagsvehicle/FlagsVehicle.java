@@ -25,7 +25,7 @@ package io.github.alshain01.flagsvehicle;
 
 import io.github.alshain01.flags.Flag;
 import io.github.alshain01.flags.Flags;
-import io.github.alshain01.flags.System;
+import io.github.alshain01.flags.CuboidType;
 import io.github.alshain01.flags.ModuleYML;
 import io.github.alshain01.flags.area.Area;
 
@@ -47,6 +47,7 @@ import java.util.Set;
 /**
  * Flags Vehicle - Module that adds vehicle flags to the plug-in Flags.
  */
+@SuppressWarnings("unused")
 public class FlagsVehicle extends JavaPlugin {
 	/**
 	 * Called when this module is enabled
@@ -75,7 +76,7 @@ public class FlagsVehicle extends JavaPlugin {
 	 * The event handlers for the flags we created earlier
 	 */
 	private class VehicleListener implements Listener {
-        final System system = System.getActive();
+        final CuboidType system = CuboidType.getActive();
         final boolean horseAPI = Flags.checkAPI("1.6.2");
         final Map<String, Flag> flags;
 
