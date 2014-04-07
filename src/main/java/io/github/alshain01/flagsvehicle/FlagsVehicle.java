@@ -23,14 +23,13 @@
  */
 package io.github.alshain01.flagsvehicle;
 
-import io.github.alshain01.flags.Flag;
-import io.github.alshain01.flags.Flags;
-import io.github.alshain01.flags.CuboidType;
-import io.github.alshain01.flags.ModuleYML;
-import io.github.alshain01.flags.area.Area;
+import io.github.alshain01.flags.api.Flag;
+import io.github.alshain01.flags.api.FlagsAPI;
+import io.github.alshain01.flags.api.area.Area;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -59,10 +58,12 @@ public class FlagsVehicle extends JavaPlugin {
 		if (!pm.isPluginEnabled("Flags")) {
 			getLogger().severe("Flags was not found. Shutting down.");
 			pm.disablePlugin(this);
+            return;
 		}
 
 		// Connect to the data file and register the flags
-		Set<Flag> flags = Flags.getRegistrar().register(new ModuleYML(this, "flags.yml"), "Vehicle");
+        YamlConfiguration flagConfig = YamlConfiguration.loadConfiguration(getResource("flags.yml"));
+        Set<Flag> flags = FlagsAPI.getRegistrar().register(flagConfig, "Vehicle");
         Map<String, Flag> flagMap = new HashMap<String, Flag>();
         for(Flag f : flags) {
             flagMap.put(f.getName(), f);
@@ -76,8 +77,6 @@ public class FlagsVehicle extends JavaPlugin {
 	 * The event handlers for the flags we created earlier
 	 */
 	private class VehicleListener implements Listener {
-        final CuboidType system = CuboidType.getActive();
-        final boolean horseAPI = Flags.checkAPI("1.6.2");
         final Map<String, Flag> flags;
 
         private VehicleListener(Map<String, Flag> flags) {
@@ -94,7 +93,7 @@ public class FlagsVehicle extends JavaPlugin {
 			}
 
 			if (!area.getValue(flag, false)) {
-				player.sendMessage(area.getMessage(flag, player.getName()));
+				player.sendMessage(area.getMessage(flag, player));
 				return true;
 			}
 			return false;
@@ -122,7 +121,7 @@ public class FlagsVehicle extends JavaPlugin {
             }
 
             if(flag != null) {
-                e.setCancelled(isDenied(e.getPlayer(), flag, system.getAreaAt(e.getClickedBlock().getLocation())));
+                e.setCancelled(isDenied(e.getPlayer(), flag, FlagsAPI.getAreaAt(e.getClickedBlock().getLocation())));
             }
 		}
 
@@ -147,16 +146,15 @@ public class FlagsVehicle extends JavaPlugin {
                 case PIG:
                     flag = flags.get("SaddledPigDamage");
                     break;
+                case HORSE:
+                    flag = flags.get("TamedHorseDamage");
+                    break;
                 default:
-                    if(horseAPI && e.getVehicle().getType() == EntityType.HORSE) {
-                        flag = flags.get("TamedHorseDamage");
-                        break;
-                    }
                     return;
             }
 
             if(flag != null) {
-                e.setCancelled(!system.getAreaAt(location).getValue(flag, false));
+                e.setCancelled(!FlagsAPI.getAreaAt(location).getValue(flag, false));
             }
         }
 	}
