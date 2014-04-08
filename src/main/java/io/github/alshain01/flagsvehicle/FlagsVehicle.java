@@ -92,8 +92,8 @@ public class FlagsVehicle extends JavaPlugin {
 				return false;
 			}
 
-			if (!area.getValue(flag, false)) {
-				player.sendMessage(area.getMessage(flag, player));
+			if (!area.getState(flag, false)) {
+				player.sendMessage(area.getMessage(flag, player.getName()));
 				return true;
 			}
 			return false;
@@ -154,7 +154,7 @@ public class FlagsVehicle extends JavaPlugin {
             }
 
             if(flag != null) {
-                e.setCancelled(!FlagsAPI.getAreaAt(location).getValue(flag, false));
+                e.setCancelled(!FlagsAPI.getAreaAt(location).getState(flag, false));
             }
         }
 	}
